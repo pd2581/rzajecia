@@ -53,4 +53,29 @@ wynik
 
 lista <- list(1,2,3,4,5)
 class(lista)
+str(lista)
+
+plec<-c("mezczyzna","kobieta","mezczyzna")
+plecf<-as.factor(plec)
+str(plecf)
+plecf2<-factor(plec,levels = c("mezczyzna", "kobieta"))
+str(plecf2)
+
+df<- data.frame(index=1:3,imie=c("jan","alina","bartek"),plec=plecf,stringsAsFactors = FALSE)
+str(df)
+View(df)
+
+df2<-read.csv2("dane.csv")
+View(df2)
+
+#petla
+for (i in 1:10){
+  if(i==2){
+  break
+  }
+  else{
+  print (i)
+  }
+}
+
 
