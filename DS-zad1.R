@@ -59,36 +59,34 @@ correlation(dane$wzrost, dane$wzrost)
 #stworzDataFrame <- function(ile=1)
 #W pierwszym wierszu użytkownik podaje nazwy kolumn. w kolejnych wierszach zawartość wierszy ramki danych ( tyle wierszy ile podaliśmy w argumencie ile. ile=1 oznacza, że gdy użytkownik nie poda żadnej wartości jako parametr, domyślna wartością będzie 1)
 
-
-stworz_Data_Frame <- function(ile = 1, nazwy_kolumn, zawartosc_ramki = list()){
+stworzDataFrame <- function(ile=1, kolumny, ramka = list()){
   
   # checks
-  if (class(zawartosc_ramki) != "list")
+  if (class(ramka) != "list")
     stop("Zmienna 'zawartosc_ramki' musi byc lista", call. = TRUE)
   
-  if (length(nazwy_kolumn) != unique(sapply(zawartosc_ramki, length)) | ile != length(zawartosc_ramki) )
+  if (length(kolumny) != unique(sapply(ramka, length)) | ile != length(ramka) )
     stop("Zmienne sa roznej dlugosci!", call. = TRUE)
   
-  # 
+  #pobranie pakietu
   packages <- 'data.table'
   
   for(package in packages){
     if(!require(package, character.only = T, quietly = T)){
       install.packages(package, repos="http://cran.us.r-project.org")
       library(package, character.only = T)}
-    library(package, character.only = T)
-                        }
+    library(package, character.only = T)                  }
   
   # creating the data frame
-  my_dt <- data.table()
-  my_dt <- rbind(my_dt,do.call(rbind,zawartosc_ramki))
-  my_dt <- as.data.frame(my_dt)
-  colnames(my_dt) <- nazwy_kolumn
+  dt <- data.table()
+  dt <- rbind(dt,do.call(rbind,ramka))
+  dt <- as.data.frame(dt)
+  colnames(dt) <- kolumny
   
-  return(my_dt)
+  return(dt)
 }
 
-stworz_Data_Frame(ile =2, nazwy_kolumn = c('imie', 'wiek'),zawartosc_ramki = list(c('Dawid', 29), c('Magda', 27)))
+stworzDataFrame(ile=2, kolumny = c('imie', 'wiek'),ramka = list(c('Dawid', 29), c('Magda', 27)))
 
 #5 Napisz funkcję , która pobiera sciezkeKatalogu, nazweKolumny, jakaFunkcje, DlaIluPlikow i liczy: 
 #mean, median,min,max w zależności od podanej nazwy funkcji w argumencie, z katologu który podaliśmy i z tylu plików ilu podaliśmy dla wybranej nazwy kolumny. 
@@ -100,16 +98,16 @@ liczZplikow <- function(sciezka,jakaFunkcja="mean",DlaIluPlikow=1){
   if (!(jakaFunkcja %in% c('mean', 'max', 'min', 'median')))
     stop("Blednie uzupelniony parametr 'jakaFunkcja'", call. = TRUE)
   
-  # packages <- 'FactoMineR'
-  # 
-  # for(package in packages){
-  #   if(!require(package, character.only = T, quietly = T)){
-  #     install.packages(package, repos="http://cran.us.r-project.org")
-  #     library(package, character.only = T)
-  #   }
-  #   library(package, character.only = T)
-  # }
+  # load needed packages
+  packages <- 'stringr'
   
+  for(package in packages){
+    if(!require(package, character.only = T, quietly = T)){
+      install.packages(package, repos="http://cran.us.r-project.org")
+      library(package, character.only = T)
+    }
+    library(package, character.only = T)
+  }
 
   #select all files
   files <- list.files(sciezka, full.names = T)[1: DlaIluPlikow]
